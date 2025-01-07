@@ -7,7 +7,17 @@ services:
     envVars:
       - key: DIALPAD_BEARER_TOKEN
         sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: dashboard-redis
+          property: connectionString
     plan: free
     branch: main
     healthCheckPath: /health
     autoDeploy: true
+
+  - type: redis
+    name: dashboard-redis
+    ipAllowList: []
+    plan: free
