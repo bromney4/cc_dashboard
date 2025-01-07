@@ -29,26 +29,39 @@ latest_data = {
 
 def get_call_center_data(call_center_id, queue_type):
     """Fetch data from Dialpad API for a specific call center"""
-    url = f"https://dialpad.com/api/v2/callcenters/{call_center_id}/status?apikey={DIALPAD_BEARER_TOKEN}"
-    headers = {"accept": "application/json"}
+    url = f"https://dialpad.com/api/v2/callcenters/{call_center_id}/status"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {DIALPAD_BEARER_TOKEN}"
+    }
+
+    print(f"\n=== Attempting to fetch data for {queue_type} ===")
+    print(f"Call Center ID: {call_center_id}")
+    print(f"Token available: {'Yes' if DIALPAD_BEARER_TOKEN else 'No'}")
 
     try:
+        print("Making API request...")
         response = requests.get(url, headers=headers)
+        print(f"Response status code: {response.status_code}")
+        print(f"Response headers: {response.headers}")
+
         if response.status_code == 200:
-            data = json.loads(response.text)
+            data = response.json()
+            print(f"Raw response data: {data}")
 
             latest_data[queue_type]["longest_queue_time"] = int(data.get("longest_call_wait_time", 0)) // 60
             latest_data[queue_type]["agents_online"] = int(data.get("on_duty_operators", 0))
             latest_data[queue_type]["calls_in_queue"] = int(data.get("pending", 0))
             latest_data[queue_type]["last_updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
-            print(f"{queue_type.capitalize()} data updated successfully")
+            print(f"Data updated for {queue_type}:")
+            print(latest_data[queue_type])
         else:
-            print(f"Error: Unable to fetch {queue_type} data. Status code: {response.status_code}")
-            print(f"Response: {response.text}")
+            print(f"Error response: {response.text}")
 
     except Exception as e:
-        print(f"An error occurred for {queue_type}: {str(e)}")
+        print(f"Exception occurred: {str(e)}")
+        print(f"Exception type: {type(e)}")
 
 def call_api():
     """Main function to continuously fetch data from both call centers"""
