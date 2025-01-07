@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Center Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 20px;
+        }
+        .queue-container {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 0;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .refresh {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="queue-container">
+            <h1>{{ data.billing.name }}</h1>
+            <p><strong>Longest Queue Time:</strong> {{ data.billing.longest_queue_time }} minutes</p>
+            <p><strong>Agents Online:</strong> {{ data.billing.agents_online }}</p>
+            <p><strong>Calls in Queue:</strong> {{ data.billing.calls_in_queue }}</p>
+            <p class="refresh">Last updated: {{ data.billing.last_updated }}</p>
+        </div>
+        <div class="queue-container">
+            <h1>{{ data.product.name }}</h1>
+            <p><strong>Longest Queue Time:</strong> {{ data.product.longest_queue_time }} minutes</p>
+            <p><strong>Agents Online:</strong> {{ data.product.agents_online }}</p>
+            <p><strong>Calls in Queue:</strong> {{ data.product.calls_in_queue }}</p>
+            <p class="refresh">Last updated: {{ data.product.last_updated }}</p>
+        </div>
+    </div>
+    <script>
+        setTimeout(function(){
+            location.reload();
+        }, 60000);
+    </script>
+</body>
+</html>
