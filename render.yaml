@@ -3,7 +3,7 @@ services:
     name: call-center-dashboard
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn wsgi:app
+    startCommand: gunicorn wsgi:app --log-level debug
     envVars:
       - key: DIALPAD_BEARER_TOKEN
         sync: false
